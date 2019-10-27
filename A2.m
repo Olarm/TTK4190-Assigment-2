@@ -1,5 +1,5 @@
 %% Assignment 2 - Part 1
-%
+clc; clear;
 %% Problem 1 - Open-loop analysis
 
 V_a = 580;  % [km/h]
@@ -71,9 +71,51 @@ t=[0:60:1000-60*3];           % Time and time-steps of 5 sec
 CourseRef=[0,5,15,15,20,18,(18+15),28,17, 10*ones(1,5)];
 
 CCI=[t' CourseRef'];
+%% 2 d)
+CS=Course_States;
+
+plot(CS.time,CS.data, 'r'); hold on; grid on;
+stairs(CCI(:,1),CCI(:,2), 'b');
+title('Course for simplified model', 'FontSize', 14)
+xlabel('time [s]','FontSize', 12)
+ylabel('Course [degrees]','FontSize', 12)
+legend('Simplified model','Course Ref')
 
 
 %% 2 e)
+AI1=Aileron_Inputs;
+AI2=Aileron_Inputs2e;
+CCM=Course_CompleteModel;
+
+plot(CS.time,CS.data, 'r'); hold on; grid on;
+plot(CCM.time,CCM.data, 'b');
+stairs(CCI(:,1),CCI(:,2), 'g');
+
+title('Simplified vs true dynamics', 'FontSize', 14)
+xlabel('time [s]','FontSize', 12)
+ylabel('Course [degrees]','FontSize', 12)
+legend('Simplified model','True dynamics', 'Course Ref')
+
+%% Aileron Inputs
+plot(AI1.time,AI1.data, 'm'); hold on; grid on;
+plot(AI2.time,AI2.data, 'g');
+title('Aileron Inputs for simplified and true dynamics', 'FontSize', 14)
+xlabel('time [s]','FontSize', 12)
+ylabel('Aileron [degrees]','FontSize', 12)
+legend('Aileron Inputs - Simplified','Aileron Inputs - True dyn.')
+
+%% 2f)
+k_fPsi=100000000000;
+CCMWIND=Course_CompleteModelWindup;
+
+plot(CCMWIND.time, CCMWIND.data, 'b'); hold on; grid on;
+plot(CCM.time, CCM.data, 'r');
+stairs(CCI(:,1),CCI(:,2), 'g');
+title('Course with and without anti-windup', 'FontSize', 14)
+xlabel('time [s]','FontSize', 12)
+ylabel('Course [degrees]','FontSize', 12)
+legend('True dyn. w. anti-windup - 2f)','True dyn. - 2e)', 'Course Ref')
+
 
 
 

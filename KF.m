@@ -32,7 +32,22 @@ classdef KF
            obj.R = model.R;
         end
         
-        function predict = 
         
+        function [xp, Pp] = predict(obj, x, P, Ts)
+            
+        end
+        
+        
+        function [vk, Sk] = innovation(obj, z, x, P)
+
+            
+        end
+            
+        
+        function [xupd, Pupd] = update(obj, z, x, P)
+
+        end
+            
+        end
     end
 end
