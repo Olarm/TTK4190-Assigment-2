@@ -42,8 +42,8 @@ k_iPhi = 0;
 TF=tf([a_phi2*k_dPhi],[1,(a_phi1+a_phi2*k_dPhi),(a_phi2*k_pPhi),0]);
 
 %%
-rlocus(TF,k_iPhi)
-title('Root Locus')
+% rlocus(TF,k_iPhi)
+% title('Root Locus')
 
 %% Open-Loop (no integrator)
 TF2=tf([a_phi2],[1,(a_phi1+a_phi2*k_dPhi),(a_phi2*k_pPhi)]);
@@ -71,56 +71,64 @@ t=[0:60:1000-60*3];           % Time and time-steps of 5 sec
 CourseRef=[0,5,15,15,20,18,(18+15),28,17, 10*ones(1,5)];
 
 CCI=[t' CourseRef'];
-%% 2 d)
-CS=Course_States;
-
-plot(CS.time,CS.data, 'r'); hold on; grid on;
-stairs(CCI(:,1),CCI(:,2), 'b');
-title('Course for simplified model', 'FontSize', 14)
-xlabel('time [s]','FontSize', 12)
-ylabel('Course [degrees]','FontSize', 12)
-legend('Simplified model','Course Ref')
-
-
-%% 2 e)
-AI1=Aileron_Inputs;
-AI2=Aileron_Inputs2e;
-CCM=Course_CompleteModel;
-
-plot(CS.time,CS.data, 'r'); hold on; grid on;
-plot(CCM.time,CCM.data, 'b');
-stairs(CCI(:,1),CCI(:,2), 'g');
-
-title('Simplified vs true dynamics', 'FontSize', 14)
-xlabel('time [s]','FontSize', 12)
-ylabel('Course [degrees]','FontSize', 12)
-legend('Simplified model','True dynamics', 'Course Ref')
-
-%% Aileron Inputs
-plot(AI1.time,AI1.data, 'm'); hold on; grid on;
-plot(AI2.time,AI2.data, 'g');
-title('Aileron Inputs for simplified and true dynamics', 'FontSize', 14)
-xlabel('time [s]','FontSize', 12)
-ylabel('Aileron [degrees]','FontSize', 12)
-legend('Aileron Inputs - Simplified','Aileron Inputs - True dyn.')
 
 %% 2f)
 k_fPsi=100000000000;
-CCMWIND=Course_CompleteModelWindup;
-
-plot(CCMWIND.time, CCMWIND.data, 'b'); hold on; grid on;
-plot(CCM.time, CCM.data, 'r');
-stairs(CCI(:,1),CCI(:,2), 'g');
-title('Course with and without anti-windup', 'FontSize', 14)
-xlabel('time [s]','FontSize', 12)
-ylabel('Course [degrees]','FontSize', 12)
-legend('True dyn. w. anti-windup - 2f)','True dyn. - 2e)', 'Course Ref')
 
 
 
+%%%%% Simulation
+sim('CompleteModelWindUp',1000)
 
 
+%%%% States
+
+time = states.Time;
+beta = states.data(:,1);
+psi = states.data(:,2);
+p = states.data(:,3);
+r = states.data(:,4);
+course = states.data(:,5);
 
 
+%%%%%% Plots %%%%%%%
 
+%% 2 d)
+
+% plot(CS.time,CS.data, 'r'); hold on; grid on;
+% stairs(CCI(:,1),CCI(:,2), 'b');
+% title('Course for simplified model', 'FontSize', 14)
+% xlabel('time [s]','FontSize', 12)
+% ylabel('Course [degrees]','FontSize', 12)
+% legend('Simplified model','Course Ref')
+
+%% 2 e)
+
+% plot(CS.time,CS.data, 'r'); hold on; grid on;
+% plot(CCM.time,CCM.data, 'b');
+% stairs(CCI(:,1),CCI(:,2), 'g');
+% 
+% title('Simplified vs true dynamics', 'FontSize', 14)
+% xlabel('time [s]','FontSize', 12)
+% ylabel('Course [degrees]','FontSize', 12)
+% legend('Simplified model','True dynamics', 'Course Ref')
+
+%% Aileron Inputs
+% plot(AI1.time,AI1.data, 'm'); hold on; grid on;
+% plot(AI2.time,AI2.data, 'g');
+% title('Aileron Inputs for simplified and true dynamics', 'FontSize', 14)
+% xlabel('time [s]','FontSize', 12)
+% ylabel('Aileron [degrees]','FontSize', 12)
+% legend('Aileron Inputs - Simplified','Aileron Inputs - True dyn.')
+
+
+%% 2f)
+
+% plot(CCMWIND.time, CCMWIND.data, 'b'); hold on; grid on;
+% plot(CCM.time, CCM.data, 'r');
+% stairs(CCI(:,1),CCI(:,2), 'g');
+% title('Course with and without anti-windup', 'FontSize', 14)
+% xlabel('time [s]','FontSize', 12)
+% ylabel('Course [degrees]','FontSize', 12)
+% legend('True dyn. w. anti-windup - 2f)','True dyn. - 2e)', 'Course Ref')
 
