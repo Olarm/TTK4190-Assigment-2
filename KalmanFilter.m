@@ -1,4 +1,9 @@
-classdef KF < matlab.system
+classdef KalmanFilter < matlab.System
+    % untitled Add summary here
+    % This template includes the minimum set of functions required
+    % to define a System object with discrete state.
+
+    % Public, tunable properties
     properties
         model
 
@@ -9,10 +14,19 @@ classdef KF < matlab.system
         h % measurement function
         H % measurement function jacobian
         R % additive measurement noise covariance
+
     end
-    
-    methods 
-        
+
+    properties(DiscreteState)
+
+    end
+
+    % Pre-computed constants
+    properties(Access = private)
+
+    end
+
+    methods(Access = protected)
         
         function obj = KF(model)
             obj = obj.setModel(model);
@@ -31,9 +45,11 @@ classdef KF < matlab.system
            obj.H = model.H;
            obj.R = model.R;
         end
-        
+          
         
         function [xp, Pp] = predict(obj, x, P, Ts)
+          
+     
             
         end
         
@@ -44,8 +60,9 @@ classdef KF < matlab.system
         end
             
         
-        function [xupd, Pupd] = update(obj, z, x, P)
+        function [xupd, Pupd] = updates(obj, z, x, P)
 
-        end
+            
+        end     
     end
 end
