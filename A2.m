@@ -77,6 +77,14 @@ k_fPsi=100000000000;
 
 
 
+%%%% Kalman
+
+Ak = A(1:4,1:4);
+Bk = [0.002; 0; -0.65; -0.02];
+Ck = [[0 0; 0 0] eye(2,2)];
+Ek = eye(4);
+
+
 %%%%% Simulation
 sim('CompleteModelWindUp',1000)
 

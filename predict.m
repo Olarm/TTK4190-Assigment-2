@@ -1,2 +1,15 @@
-function [xp Pp] = predict(x, Ts)
-    xp = 
+function [xp, Pp] = predict(u, P, x)
+
+    Q = eye(4);
+
+    Ak = [-0.322 0.052 0.028 -1.12;
+            0 0 1 -0.001;
+            -10.6 0 -2.87 0.46;
+            6.87 0 -0.04 -0.32];
+
+    Bk = [0.002; 0; -0.65; -0.02];
+
+
+    xp = Ak*x + Bk*u;
+    Pp = Ak*P*Ak' + Q;
+    

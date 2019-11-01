@@ -2,17 +2,26 @@ function model = airplaneModel(q, r)
     % returns a structure that implements a discrete time CV model with
     % continuous time accelleration covariance q and positional
     % measurement with noise with covariance r, both in two dimensions.
-    model.f = @(x, Ts) [x(1:4); 0] + [Ts * x(3:4); zeros(3,1)];
-    model.F = @(x, Ts) [eye(4) + diag(Ts * ones(2,1), 2), zeros(4,1);
-                        zeros(1, 5)];
-    model.Q = @(x, Ts) [q * [Ts^3/3, 0,      Ts^2/2,     0;
-                            0,      Ts^3/3, 0,          Ts^2/2;
-                            Ts^2/2,  0,     Ts,        0;
-                            0,      Ts^2/2, 0,         Ts], zeros(4,1);
-                            zeros(1, 5)];
+    
+    model.ak = @(x, Ts) [-0.322 0.052 0.028 -1.12;  % f
+                        0 0 1 -0.001;
+                        -10.6 0 -2.87 0.46;
+                        6.87 0 -0.04 -0.32] * x(1:4);
                     
-    model.h = @(x) x(1:2);
-    model.H = @(x) [eye(2), zeros(2,3)];
-    model.R = @(x) r * eye(2);
+    model.Ak = @(x, Ts) [-0.322 0.052 0.028 -1.12;  % F
+                        0 0 1 -0.001;
+                        -10.6 0 -2.87 0.46;
+                        6.87 0 -0.04 -0.32];
+                    
+    model.Bk = @(u, Ts) [0.002; 0; -0.65; -0.02] * u;   
+    model.Q = @(x, Ts) q * eye(4);
+    model.R = @(x,Ts) r * eye(2);
+    
+    model.ck = @(x) [[0 0; 0 0] eye(2,2)] * x(1:4);          % h
+    model.Ck = @(x) [[0 0; 0 0] eye(2,2)];          % H
+
+    
+    model.Ek = @(x) eye(4);
+    
 end
 
