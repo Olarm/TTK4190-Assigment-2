@@ -1,8 +1,5 @@
 clc; clear;
 %% Problem 1 - Open-loop analysis
-
-V_a = 580;  % [km/h]
-
 A = [-0.322 0.052 0.028 -1.12 0.002;...
     0 0 1 -0.001 0;...
     -10.6 0 -2.87 0.46 -0.65;...
@@ -11,7 +8,7 @@ A = [-0.322 0.052 0.028 -1.12 0.002;...
 
 B = [0 0 0 0 7.5]';
 
-C = [eye(4,5)];
+C = eye(4,5);
 
 D = [0 0 0 0]';
 
@@ -45,6 +42,7 @@ TF=tf([a_phi2*k_dPhi],[1,(a_phi1+a_phi2*k_dPhi),(a_phi2*k_pPhi),0]);
 
 %% Open-Loop (no integrator)
 TF2=tf([a_phi2],[1,(a_phi1+a_phi2*k_dPhi),(a_phi2*k_pPhi)]);
+
 %% Closed (w. integrator), but no Evan..
 %k_iPhi=0;
 TF3=tf([a_phi2, a_phi2*(k_iPhi/k_pPhi)],[1,(a_phi1+a_phi2*k_dPhi),(a_phi2*k_pPhi), a_phi2*k_iPhi]);
@@ -94,12 +92,16 @@ kr = states.data(:,9);
 
 subplot(4, 1, 1)
 plot(time, beta, time, kbeta)
+legend('measured beta','kalman beta')
 
 subplot(4, 1, 2)
 plot(time, psi, time, kpsi)
+legend('measured psi','kalman psi')
 
 subplot(4, 1, 3)
 plot(time, p, time, kp)
+legend('measured p','kalman p')
 
 subplot(4, 1, 4)
 plot(time, r, time, kr)
+legend('measured r','kalman r')
