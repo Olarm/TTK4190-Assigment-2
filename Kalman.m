@@ -184,13 +184,15 @@ block.OutputPort(1).Data = block.Dwork(1).Data;
 function Update(block)
 
     % Tuning parameters
-    Q = [1 0 0 0;
-         0 0.1 0 0;
-         0 0 1 0;
-         0 0 0 1];
+    Q = [1e-08 0 0 0;
+         0 1e-08 0 0;
+         0 0 1e-06 0;
+         0 0 0 1e-07];
      
+%    R = [6.1685e-07 0;
+%         0 6.1685e-07];
     R = [0.5 0;
-         0 0.5];
+        0 0.5];
 
     model = airplaneModel(Q, R);
 
@@ -209,6 +211,7 @@ function Update(block)
 function Terminate(block)
 
 %end Terminate
+
 
 function predict(block, model)
     % Get block data
@@ -229,8 +232,8 @@ function predict(block, model)
     % Return data
     block.Dwork(3).Data = xpred';
     block.Dwork(4).Data = reshape(Ppred, 1, 16);
-
 %end predict
+
 
 function [vk, Sk] = innovation(block, model)
     % Get block data
@@ -246,8 +249,8 @@ function [vk, Sk] = innovation(block, model)
     % Innovate
     vk = zk + Ck * xpred;
     Sk = Ck * Ppred * Ck' + R;
-        
 %end innovation
+
 
 function update_kalman(block, model)
     % Get block data
@@ -272,5 +275,4 @@ function update_kalman(block, model)
     % Return data
     block.Dwork(1).Data = xest';
     block.Dwork(2).Data = reshape(Pest, 1, 16);
-    
 %end update_kalman

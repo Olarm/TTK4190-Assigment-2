@@ -79,8 +79,27 @@ sim('CompleteModelWindUp',1000)
 %%%% States
 
 time = states.Time;
-beta = states.data(:,1);
-psi = states.data(:,2);
-p = states.data(:,3);
-r = states.data(:,4);
-course = states.data(:,5);
+course = states.data(:,1);
+beta = states.data(:,2);
+psi = states.data(:,3);
+p = states.data(:,4);
+r = states.data(:,5);
+kbeta = states.data(:,6);
+kpsi = states.data(:,7);
+kp = states.data(:,8);
+kr = states.data(:,9);
+
+
+%%%% Plots %%%%
+
+subplot(4, 1, 1)
+plot(time, beta, time, kbeta)
+
+subplot(4, 1, 2)
+plot(time, psi, time, kpsi)
+
+subplot(4, 1, 3)
+plot(time, p, time, kp)
+
+subplot(4, 1, 4)
+plot(time, r, time, kr)
